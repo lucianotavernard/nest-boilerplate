@@ -1,6 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Request,
+} from '@nestjs/common';
 
 import { Public } from '@/modules/auth/auth.decorator';
+import { AuthRequest } from '@/modules/auth/dto/auth-request.dto';
 
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,9 +25,9 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findById(id);
+  @Get('/profile')
+  show(@Request() request: AuthRequest) {
+    return this.usersService.findById(request.user.id);
   }
 
   @Patch(':id')
