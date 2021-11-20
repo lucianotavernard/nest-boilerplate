@@ -8,12 +8,27 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id        String   @id @db.Uuid
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamp(6)
   updatedAt DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
   name      String   @db.VarChar(100)
   email     String   @unique @db.VarChar(150)
   password  String   @db.VarChar(60)
 
+  tokens UserToken[]
+
   @@map("users")
+}
+
+model UserToken {
+  id           String   @id @db.Uuid
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamp(6)
+  updatedAt    DateTime @default(now()) @map("updated_at") @db.Timestamp(6)
+  userId       String   @map("user_id") @db.Uuid
+  refreshToken String   @map("token") @db.VarChar(300)
+  expiresIn    DateTime @map("expires_in") @db.Timestamp(6)
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("users_tokens")
 }
