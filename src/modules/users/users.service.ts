@@ -90,11 +90,11 @@ export class UsersService {
           HttpStatus.BAD_REQUEST,
         );
       }
-    }
 
-    Object.assign(data, {
-      password: await this.hashProvider.create(password),
-    });
+      Object.assign(data, {
+        password: await this.hashProvider.create(password),
+      });
+    }
 
     return this.prismaProvider.user.update({
       data,

@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Request } from '@nestjs/common';
 
 import { Public } from '@/modules/auth/auth.decorator';
 import { AuthRequest } from '@/modules/auth/dto/auth-request.dto';
@@ -30,8 +22,11 @@ export class UsersController {
     return this.usersService.findById(request.user.id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  @Patch('/profile')
+  update(
+    @Request() request: AuthRequest,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.usersService.update(request.user.id, updateUserDto);
   }
 }
